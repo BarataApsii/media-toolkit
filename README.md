@@ -34,17 +34,10 @@ PostgreSQL (metadata :5432)
 ### Prerequisites
 
 - Node.js 18+
-- Docker & Docker Compose
+- PostgreSQL (running locally on port 5432)
+- Redis (running locally on port 6379)
 
-### 1. Start infrastructure
-
-```bash
-docker compose up -d
-```
-
-This starts PostgreSQL and Redis.
-
-### 2. Backend
+### 1. Backend
 
 ```bash
 cd backend
@@ -56,7 +49,7 @@ npm run start:dev
 
 Backend runs on http://localhost:3001
 
-### 3. Frontend
+### 2. Frontend
 
 ```bash
 cd frontend
