@@ -33,34 +33,31 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 px-4 dark:bg-zinc-950">
+    <div className="flex flex-1 items-center justify-center bg-white px-4 py-12 dark:bg-[#0a192f]">
       <div className="w-full max-w-md">
         <div className="mb-8 text-center">
-          <Link href="/" className="text-2xl font-bold text-zinc-900 dark:text-white">
-            Media Toolkit
-          </Link>
-          <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">Create your account</p>
+          <p className="text-2xl font-bold text-blue-900 dark:text-white">Sign up for an account</p>
         </div>
 
         <form
           onSubmit={handleSubmit}
-          className="rounded-xl border border-zinc-200 bg-white p-8 shadow-sm dark:border-zinc-800 dark:bg-zinc-900"
+          className="rounded-xl border border-blue-200 bg-white p-8 shadow-sm dark:border-blue-200 dark:bg-white"
         >
           <div className="space-y-4">
             <div>
-              <label className="mb-1 block text-sm font-medium text-zinc-700 dark:text-zinc-300">
+              <label className="mb-1 block text-sm font-medium text-blue-700 dark:text-blue-700">
                 Name
               </label>
               <input
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full rounded-md border border-zinc-300 px-3 py-2 text-sm text-zinc-900 placeholder-zinc-400 focus:border-zinc-500 focus:outline-none focus:ring-1 focus:ring-zinc-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-white"
+                className="w-full rounded-md border border-blue-300 px-3 py-2 text-sm text-blue-900 placeholder-blue-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-blue-300 dark:bg-white dark:text-blue-900"
                 placeholder="Your name"
               />
             </div>
             <div>
-              <label className="mb-1 block text-sm font-medium text-zinc-700 dark:text-zinc-300">
+              <label className="mb-1 block text-sm font-medium text-blue-700 dark:text-blue-700">
                 Email
               </label>
               <input
@@ -68,12 +65,12 @@ export default function RegisterPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="w-full rounded-md border border-zinc-300 px-3 py-2 text-sm text-zinc-900 placeholder-zinc-400 focus:border-zinc-500 focus:outline-none focus:ring-1 focus:ring-zinc-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-white"
+                className="w-full rounded-md border border-blue-300 px-3 py-2 text-sm text-blue-900 placeholder-blue-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-blue-300 dark:bg-white dark:text-blue-900"
                 placeholder="you@example.com"
               />
             </div>
             <div>
-              <label className="mb-1 block text-sm font-medium text-zinc-700 dark:text-zinc-300">
+              <label className="mb-1 block text-sm font-medium text-blue-700 dark:text-blue-700">
                 Password
               </label>
               <input
@@ -82,7 +79,7 @@ export default function RegisterPage() {
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 minLength={6}
-                className="w-full rounded-md border border-zinc-300 px-3 py-2 text-sm text-zinc-900 placeholder-zinc-400 focus:border-zinc-500 focus:outline-none focus:ring-1 focus:ring-zinc-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-white"
+                className="w-full rounded-md border border-blue-300 px-3 py-2 text-sm text-blue-900 placeholder-blue-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-blue-300 dark:bg-white dark:text-blue-900"
                 placeholder="••••••••"
               />
             </div>
@@ -91,14 +88,14 @@ export default function RegisterPage() {
           <button
             type="submit"
             disabled={loading}
-            className="mt-6 w-full rounded-md bg-zinc-900 py-2.5 text-sm font-medium text-white hover:bg-zinc-800 disabled:opacity-50 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-100"
+            className="mt-6 w-full rounded-md bg-blue-900 py-2.5 text-sm font-medium text-white hover:bg-blue-800 disabled:opacity-50 dark:bg-blue-900 dark:text-white dark:hover:bg-blue-800"
           >
-            {loading ? 'Creating account...' : 'Create Account'}
+            {loading ? 'Signing up...' : 'Sign Up'}
           </button>
 
-          <p className="mt-4 text-center text-sm text-zinc-600 dark:text-zinc-400">
+          <p className="mt-4 text-center text-sm text-blue-600 dark:text-blue-600">
             Already have an account?{' '}
-            <Link href="/login" className="font-medium text-zinc-900 dark:text-white">
+            <Link href="/login" className="font-medium text-blue-900 dark:text-blue-900">
               Sign in
             </Link>
           </p>

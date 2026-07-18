@@ -5,6 +5,7 @@ import { PrismaModule } from './prisma/prisma.module';
 import { AuthModule } from './auth/auth.module';
 import { FilesModule } from './files/files.module';
 import { JobsModule } from './jobs/jobs.module';
+import { AdminModule } from './admin/admin.module';
 // import { WorkerModule } from './worker/worker.module';
 
 const redisEnabled = process.env.REDIS_ENABLED !== 'false';
@@ -30,6 +31,7 @@ const redisEnabled = process.env.REDIS_ENABLED !== 'false';
     AuthModule,
     FilesModule,
     JobsModule,
+    AdminModule,
     // WorkerModule, // Temporarily disabled - requires Redis
   ],
 })

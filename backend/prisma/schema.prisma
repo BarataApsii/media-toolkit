@@ -8,13 +8,18 @@ datasource db {
 }
 
 model User {
-  id           String   @id @default(uuid())
-  email        String   @unique
-  password     String
-  name         String?
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-  files        File[]
+  id                    String   @id @default(uuid())
+  email                 String   @unique
+  password              String
+  name                  String?
+  role                  UserRole @default(USER)
+  status                UserStatus @default(ACTIVE)
+  subscriptionTier      SubscriptionTier @default(FREE)
+  emailVerified         Boolean  @default(false)
+  emailVerificationToken String?  @unique
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+  files                 File[]
 
   @@map("users")
 }
@@ -60,6 +65,7 @@ enum FileType {
   IMAGE
   VIDEO
   PDF
+  AUDIO
 }
 
 enum JobStatus {
@@ -67,4 +73,20 @@ enum JobStatus {
   PROCESSING
   COMPLETED
   FAILED
+}
+
+enum UserRole {
+  USER
+  ADMIN
+}
+
+enum UserStatus {
+  ACTIVE
+  DEACTIVATED
+  DELETED
+}
+
+enum SubscriptionTier {
+  FREE
+  PREMIUM
 }

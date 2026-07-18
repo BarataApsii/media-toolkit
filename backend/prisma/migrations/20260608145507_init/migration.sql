@@ -1,5 +1,5 @@
 -- CreateEnum
-CREATE TYPE "FileType" AS ENUM ('IMAGE', 'VIDEO');
+CREATE TYPE "FileType" AS ENUM ('IMAGE', 'VIDEO', 'PDF');
 
 -- CreateEnum
 CREATE TYPE "JobStatus" AS ENUM ('PENDING', 'PROCESSING', 'COMPLETED', 'FAILED');

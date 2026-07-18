@@ -3,7 +3,6 @@
 import { useAuth } from '@/lib/auth-context';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
-import Navbar from '@/components/navbar';
 
 export default function ProtectedLayout({ children }: { children: React.ReactNode }) {
   const { user, isLoading } = useAuth();
@@ -26,8 +25,7 @@ export default function ProtectedLayout({ children }: { children: React.ReactNod
   if (!user) return null;
 
   return (
-    <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950">
-      <Navbar />
+    <div className="min-h-screen bg-white dark:bg-[#0a192f]">
       <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6">{children}</main>
     </div>
   );

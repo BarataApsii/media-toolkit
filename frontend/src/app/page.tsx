@@ -2,36 +2,14 @@ import Link from 'next/link';
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen flex-col">
-      {/* Hero */}
-      <header className="border-b border-zinc-200 bg-white dark:border-zinc-700 dark:bg-white">
-        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6">
-          <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
-            <img src="/logo.png" alt="Media Toolkit" className="h-8 w-8" />
-            <span className="text-xl font-bold text-zinc-900 dark:text-zinc-900">Media Toolkit</span>
-          </Link>
-          <div className="flex items-center gap-3">
-            <Link href="/login" className="text-sm font-medium text-zinc-600 hover:text-zinc-900 dark:text-zinc-700">
-              Login
-            </Link>
-            <Link
-              href="/register"
-              className="rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-800 dark:bg-[#0a192f] dark:text-white"
-            >
-              Get Started
-            </Link>
-          </div>
-        </div>
-      </header>
-
-      <main className="flex flex-1 flex-col items-center justify-center px-4 py-24">
+    <main className="flex flex-1 flex-col items-center justify-center px-4 py-24">
         <div className="mx-auto max-w-3xl text-center">
           <h1 className="text-5xl font-bold tracking-tight text-zinc-900 dark:text-white sm:text-6xl">
-            Compress. Convert. Optimize.
+            Compres & Optimize
           </h1>
           <p className="mt-6 text-lg leading-8 text-zinc-600 dark:text-zinc-400">
             A powerful media processing toolkit for freelancers, drone operators, and agencies.
-            Upload your images and videos — we handle compression, conversion, and optimization in the background.
+            Upload your images, videos, audio, and PDFs — we handle compression and optimization.
           </p>
           <div className="mt-10 flex items-center justify-center gap-4">
             <Link
@@ -50,7 +28,7 @@ export default function Home() {
         </div>
 
         {/* Feature cards */}
-        <div className="mx-auto mt-24 grid max-w-5xl gap-8 px-4 sm:grid-cols-3">
+        <div className="mx-auto mt-24 grid max-w-5xl gap-8 px-4 sm:grid-cols-2 lg:grid-cols-4">
           <div className="rounded-xl border border-zinc-200 p-6 dark:border-zinc-800">
             <div className="mb-3 text-2xl">🖼️</div>
             <h3 className="font-semibold text-zinc-900 dark:text-white">Image Compression</h3>
@@ -66,22 +44,25 @@ export default function Home() {
             </p>
           </div>
           <div className="rounded-xl border border-zinc-200 p-6 dark:border-zinc-800">
-            <div className="mb-3 text-2xl">⚡</div>
-            <h3 className="font-semibold text-zinc-900 dark:text-white">Background Processing</h3>
+            <div className="mb-3 text-2xl">🎵</div>
+            <h3 className="font-semibold text-zinc-900 dark:text-white">Audio Compression</h3>
             <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
-              All processing happens in the background via job queues. Track progress in real-time.
+              Compress MP3, WAV, OGG, M4A, FLAC, AAC files with FFmpeg.
+            </p>
+          </div>
+          <div className="rounded-xl border border-zinc-200 p-6 dark:border-zinc-800">
+            <div className="mb-3 flex items-center justify-center">
+              <svg className="h-10 w-10" viewBox="0 0 24 24" fill="none">
+                <rect x="4" y="2" width="16" height="20" rx="2" fill="#EF4444" />
+                <path d="M8 7h8M8 11h8M8 15h5" stroke="white" strokeWidth="2" strokeLinecap="round" />
+              </svg>
+            </div>
+            <h3 className="font-semibold text-zinc-900 dark:text-white">PDF Compression</h3>
+            <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
+              Optimize PDF files by removing unused objects and compressing streams.
             </p>
           </div>
         </div>
       </main>
-
-      <footer className="border-t border-zinc-200 py-8 text-sm text-zinc-500 dark:border-zinc-800">
-        <div className="mx-auto flex max-w-7xl items-center justify-center px-4 sm:px-6">
-          <Link href="https://nextdev-png.com/" target="_blank" rel="noopener noreferrer" className="hover:text-zinc-700 dark:hover:text-zinc-300">
-            &copy; {new Date().getFullYear()} NextDev-png. All rights reserved.
-          </Link>
-        </div>
-      </footer>
-    </div>
   );
 }
