@@ -5,26 +5,32 @@ import { PrismaModule } from './prisma/prisma.module';
 import { AuthModule } from './auth/auth.module';
 import { FilesModule } from './files/files.module';
 import { JobsModule } from './jobs/jobs.module';
-import { WorkerModule } from './worker/worker.module';
+// import { WorkerModule } from './worker/worker.module';
+
+const redisEnabled = process.env.REDIS_ENABLED !== 'false';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
-    BullModule.forRootAsync({
-      imports: [ConfigModule],
-      useFactory: (configService: ConfigService) => ({
-        connection: {
-          host: configService.get<string>('REDIS_HOST', 'localhost'),
-          port: configService.get<number>('REDIS_PORT', 6379),
-        },
-      }),
-      inject: [ConfigService],
-    }),
+    ...(redisEnabled
+      ? [
+          BullModule.forRootAsync({
+            imports: [ConfigModule],
+            useFactory: (configService: ConfigService) => ({
+              connection: {
+                host: configService.get<string>('REDIS_HOST', 'localhost'),
+                port: configService.get<number>('REDIS_PORT', 6379),
+              },
+            }),
+            inject: [ConfigService],
+          }),
+        ]
+      : []),
     PrismaModule,
     AuthModule,
     FilesModule,
     JobsModule,
-    WorkerModule,
+    // WorkerModule, // Temporarily disabled - requires Redis
   ],
 })
 export class AppModule {}

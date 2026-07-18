@@ -12,6 +12,8 @@ export class FilesService {
   ) {
     const fileType = file.mimetype.startsWith('image/')
       ? FileType.IMAGE
+      : file.mimetype === 'application/pdf'
+      ? FileType.PDF
       : FileType.VIDEO;
 
     return this.prisma.file.create({

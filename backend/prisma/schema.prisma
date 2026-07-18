@@ -59,6 +59,7 @@ model Job {
 enum FileType {
   IMAGE
   VIDEO
+  PDF
 }
 
 enum JobStatus {

@@ -4,16 +4,19 @@ export default function Home() {
   return (
     <div className="flex min-h-screen flex-col">
       {/* Hero */}
-      <header className="border-b border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-950">
+      <header className="border-b border-zinc-200 bg-white dark:border-zinc-700 dark:bg-white">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6">
-          <span className="text-xl font-bold text-zinc-900 dark:text-white">Media Toolkit</span>
+          <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
+            <img src="/logo.png" alt="Media Toolkit" className="h-8 w-8" />
+            <span className="text-xl font-bold text-zinc-900 dark:text-zinc-900">Media Toolkit</span>
+          </Link>
           <div className="flex items-center gap-3">
-            <Link href="/login" className="text-sm font-medium text-zinc-600 hover:text-zinc-900 dark:text-zinc-400">
+            <Link href="/login" className="text-sm font-medium text-zinc-600 hover:text-zinc-900 dark:text-zinc-700">
               Login
             </Link>
             <Link
               href="/register"
-              className="rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-800 dark:bg-white dark:text-zinc-900"
+              className="rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-800 dark:bg-[#0a192f] dark:text-white"
             >
               Get Started
             </Link>
@@ -72,8 +75,12 @@ export default function Home() {
         </div>
       </main>
 
-      <footer className="border-t border-zinc-200 py-8 text-center text-sm text-zinc-500 dark:border-zinc-800">
-        Media Toolkit &copy; {new Date().getFullYear()}
+      <footer className="border-t border-zinc-200 py-8 text-sm text-zinc-500 dark:border-zinc-800">
+        <div className="mx-auto flex max-w-7xl items-center justify-center px-4 sm:px-6">
+          <Link href="https://nextdev-png.com/" target="_blank" rel="noopener noreferrer" className="hover:text-zinc-700 dark:hover:text-zinc-300">
+            &copy; {new Date().getFullYear()} NextDev-png. All rights reserved.
+          </Link>
+        </div>
       </footer>
     </div>
   );

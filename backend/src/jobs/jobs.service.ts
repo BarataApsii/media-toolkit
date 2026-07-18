@@ -1,13 +1,15 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, Logger, Optional } from '@nestjs/common';
 import { InjectQueue } from '@nestjs/bullmq';
 import { Queue } from 'bullmq';
 import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class JobsService {
+  private readonly logger = new Logger(JobsService.name);
+
   constructor(
     private prisma: PrismaService,
-    @InjectQueue('media-processing') private mediaQueue: Queue,
+    @Optional() @InjectQueue('media-processing') private mediaQueue?: Queue,
   ) {}
 
   async createJob(fileId: string, operation = 'compress') {
@@ -20,14 +22,26 @@ export class JobsService {
       data: { fileId, operation },
     });
 
-    await this.mediaQueue.add('process-media', {
-      jobId: job.id,
-      fileId: file.id,
-      filePath: file.path,
-      fileType: file.fileType,
-      mimeType: file.mimeType,
-      operation,
-    });
+    if (this.mediaQueue) {
+      await this.mediaQueue.add('process-media', {
+        jobId: job.id,
+        fileId: file.id,
+        filePath: file.path,
+        fileType: file.fileType,
+        mimeType: file.mimeType,
+        operation,
+      });
+    } else {
+      this.logger.warn('Redis is disabled. Job created but will not be processed automatically.');
+      // Mark job as failed since no worker will process it
+      await this.prisma.job.update({
+        where: { id: job.id },
+        data: {
+          status: 'FAILED',
+          error: 'Redis is disabled. Job processing not available.',
+        },
+      });
+    }
 
     return job;
   }

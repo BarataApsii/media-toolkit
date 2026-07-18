@@ -2,15 +2,16 @@ import { Processor, WorkerHost } from '@nestjs/bullmq';
 import { Logger } from '@nestjs/common';
 import { Job } from 'bullmq';
 import sharp from 'sharp';
-import { existsSync, mkdirSync } from 'fs';
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs';
 import { join, extname, basename } from 'path';
 import { PrismaService } from '../prisma/prisma.service';
+import { PDFDocument } from 'pdf-lib';
 
 interface MediaJobData {
   jobId: string;
   fileId: string;
   filePath: string;
-  fileType: 'IMAGE' | 'VIDEO';
+  fileType: 'IMAGE' | 'VIDEO' | 'PDF';
   mimeType: string;
   operation: string;
 }
@@ -42,6 +43,8 @@ export class MediaProcessor extends WorkerHost {
 
       if (fileType === 'IMAGE') {
         ({ outputPath, outputSize } = await this.processImage(filePath, operation));
+      } else if (fileType === 'PDF') {
+        ({ outputPath, outputSize } = await this.processPDF(filePath, operation));
       } else {
         ({ outputPath, outputSize } = await this.processVideo(filePath, operation));
       }
@@ -118,5 +121,40 @@ export class MediaProcessor extends WorkerHost {
     // For now, return a placeholder for video processing
     this.logger.warn('Video processing not yet implemented (Phase B)');
     return { outputPath: filePath, outputSize: 0 };
+  }
+
+  private async processPDF(
+    filePath: string,
+    operation: string,
+  ): Promise<{ outputPath: string; outputSize: number }> {
+    const ext = extname(filePath);
+    const name = basename(filePath, ext);
+    const outputPath = join(this.outputDir, `${name}-${operation}${ext}`);
+
+    if (operation !== 'compress') {
+      this.logger.warn(`PDF operation '${operation}' not supported, defaulting to compress`);
+    }
+
+    try {
+      const pdfBytes = readFileSync(filePath);
+      const pdfDoc = await PDFDocument.load(pdfBytes);
+
+      // Compress by removing unused objects and compressing streams
+      const compressedPdfBytes = await pdfDoc.save({
+        useObjectStreams: true,
+        addDefaultPage: false,
+        objectsPerTick: 50,
+      });
+
+      writeFileSync(outputPath, compressedPdfBytes);
+      const outputSize = compressedPdfBytes.length;
+
+      this.logger.log(`PDF compressed: ${filePath} -> ${outputPath} (${outputSize} bytes)`);
+      return { outputPath, outputSize };
+    } catch (error) {
+      const errMsg = error instanceof Error ? error.message : 'Unknown error';
+      this.logger.error(`PDF compression failed: ${errMsg}`);
+      throw error;
+    }
   }
 }

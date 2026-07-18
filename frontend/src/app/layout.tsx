@@ -17,6 +17,9 @@ export const metadata: Metadata = {
   title: "Media Toolkit — Compress, Convert & Optimize",
   description:
     "A full-stack media processing SaaS for image compression, video compression, and format conversion.",
+  icons: {
+    icon: "/logo.png",
+  },
 };
 
 export default function RootLayout({
@@ -29,7 +32,7 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-white dark:bg-zinc-950">
+      <body className="min-h-full flex flex-col bg-white dark:bg-[#0a192f]">
         <Providers>{children}</Providers>
       </body>
     </html>
