@@ -1,23 +1,46 @@
 'use client';
 
-import { useAuth } from '@/lib/auth-context';
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
-  const { user, isLoading } = useAuth();
   const router = useRouter();
   const pathname = usePathname();
+  const [localUser, setLocalUser] = useState<any>(null);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    if (!isLoading && (!user || user.role !== 'ADMIN')) {
-      router.push('/dashboard');
+    setMounted(true);
+    // Check localStorage only on client side
+    try {
+      const userStr = localStorage.getItem('user');
+      setLocalUser(userStr ? JSON.parse(userStr) : null);
+    } catch {
+      setLocalUser(null);
     }
-  }, [user, isLoading, router]);
+  }, []);
 
-  if (isLoading) {
+  useEffect(() => {
+    // Don't redirect on the login page
+    if (pathname === '/admin/login') return;
+    
+    // Only check localStorage after mounted
+    if (mounted) {
+      if (!localUser) {
+        router.push('/admin/login');
+      } else if (localUser.role !== 'ADMIN') {
+        router.push('/dashboard');
+      }
+    }
+  }, [router, pathname, localUser, mounted]);
+
+  // Don't check auth on login page
+  if (pathname === '/admin/login') return <>{children}</>;
+
+  // Show loading while checking auth
+  if (!mounted) {
     return (
       <div className="flex min-h-screen items-center justify-center">
         <div className="text-zinc-500">Loading...</div>
@@ -25,7 +48,14 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     );
   }
 
-  if (!user || user.role !== 'ADMIN') return null;
+  // Only check localStorage for auth after mounted
+  if (!localUser) {
+    return null;
+  }
+  
+  if (localUser.role !== 'ADMIN') {
+    return null;
+  }
 
   const navItems = [
     { href: '/admin', label: 'Overview', icon: '📊' },

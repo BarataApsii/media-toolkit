@@ -33,7 +33,7 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-white dark:bg-[#0a192f]">
+      <body className="min-h-full flex flex-col bg-white dark:bg-[#0a192f]" style={{ backgroundImage: 'url(/bg.png)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundAttachment: 'fixed' }}>
         <Providers>
           <LayoutWrapper>{children}</LayoutWrapper>
         </Providers>

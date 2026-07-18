@@ -6,11 +6,13 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 import api from '@/lib/api';
+import { getAuthErrorMessage } from '@/lib/error-messages';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  const [resending, setResending] = useState(false);
   const { login, user } = useAuth();
   const router = useRouter();
 
@@ -31,13 +33,27 @@ export default function LoginPage() {
         window.location.href = '/dashboard';
       }
     } catch (err: unknown) {
-      const message =
-        err && typeof err === 'object' && 'response' in err
-          ? (err as { response: { data: { message: string } } }).response?.data?.message
-          : 'Login failed';
-      toast.error(message || 'Login failed');
+      const error = getAuthErrorMessage(err);
+      toast.error(`${error.message}. ${error.suggestion}`);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleResendVerification = async () => {
+    if (!email) {
+      toast.error('Please enter your email address');
+      return;
+    }
+    setResending(true);
+    try {
+      await api.post('/auth/resend-verification', { email });
+      toast.success('Verification email sent successfully');
+    } catch (err: unknown) {
+      const error = getAuthErrorMessage(err);
+      toast.error(`${error.message}. ${error.suggestion}`);
+    } finally {
+      setResending(false);
     }
   };
 
@@ -95,6 +111,17 @@ export default function LoginPage() {
               Sign up
             </Link>
           </p>
+
+          <div className="mt-4 border-t border-blue-200 pt-4">
+            <button
+              type="button"
+              onClick={handleResendVerification}
+              disabled={resending}
+              className="w-full text-sm text-blue-600 hover:text-blue-900 disabled:opacity-50 dark:text-blue-600 dark:hover:text-blue-900"
+            >
+              {resending ? 'Sending...' : 'Resend verification email'}
+            </button>
+          </div>
         </form>
       </div>
     </div>

@@ -9,6 +9,7 @@ interface User {
   name: string | null;
   role: 'USER' | 'ADMIN';
   subscriptionTier: 'FREE' | 'PREMIUM';
+  emailVerified?: boolean;
 }
 
 interface AuthContextType {
@@ -26,16 +27,28 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [token, setToken] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    const savedToken = localStorage.getItem('token');
-    const savedUser = localStorage.getItem('user');
-    if (savedToken && savedUser) {
-      setToken(savedToken);
-      setUser(JSON.parse(savedUser));
-    }
-    setIsLoading(false);
+    setMounted(true);
   }, []);
+
+  useEffect(() => {
+    if (!mounted) return;
+    
+    try {
+      const savedToken = localStorage.getItem('token');
+      const savedUser = localStorage.getItem('user');
+      if (savedToken && savedUser) {
+        setToken(savedToken);
+        setUser(JSON.parse(savedUser));
+      }
+    } catch {
+      // Handle localStorage access errors
+    } finally {
+      setIsLoading(false);
+    }
+  }, [mounted]);
 
   const login = async (email: string, password: string) => {
     const res = await api.post('/auth/login', { email, password });

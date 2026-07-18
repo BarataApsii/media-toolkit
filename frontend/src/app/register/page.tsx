@@ -5,6 +5,7 @@ import { useAuth } from '@/lib/auth-context';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
+import { getAuthErrorMessage } from '@/lib/error-messages';
 
 export default function RegisterPage() {
   const [name, setName] = useState('');
@@ -18,15 +19,12 @@ export default function RegisterPage() {
     e.preventDefault();
     setLoading(true);
     try {
-      await register(email, password, name || undefined);
-      toast.success('Account created successfully');
-      router.push('/dashboard');
+      const res = await register(email, password, name || undefined);
+      toast.success(res.message || 'Account created successfully. Please check your email to verify your account.');
+      router.push('/login');
     } catch (err: unknown) {
-      const message =
-        err && typeof err === 'object' && 'response' in err
-          ? (err as { response: { data: { message: string } } }).response?.data?.message
-          : 'Registration failed';
-      toast.error(message || 'Registration failed');
+      const error = getAuthErrorMessage(err);
+      toast.error(`${error.message}. ${error.suggestion}`);
     } finally {
       setLoading(false);
     }
